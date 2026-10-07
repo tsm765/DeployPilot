@@ -22,7 +22,7 @@
 ## Phase 2 — Repository Bootstrap
 
 - [x] Create the Git repository.
-- [ ] Create the initial directory structure.
+- [x] Create the initial directory structure.
 - [x] Add `.gitignore`.
 - [ ] Add initial `README.md`.
 - [ ] Add frontend scaffold.
