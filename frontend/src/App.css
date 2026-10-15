@@ -1,0 +1,164 @@
+#root {
+  width: 100%;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 48px 24px;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.dashboard-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+.deployment-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.deployment-meta {
+  display: flex;
+  gap: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.deployment-meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.status-list {
+  margin-top: 16px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-name {
+  font-weight: 600;
+}
+
+.status-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.status-symbol {
+  width: 20px;
+  text-align: center;
+}
+
+.status-passed .status-value {
+  color: #15803d;
+}
+
+.status-failed .status-value {
+  color: #b91c1c;
+}
+
+.status-running .status-value {
+  color: #a16207;
+}
+
+.status-pending .status-value {
+  color: #6b7280;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .deployment-meta {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.analysis-card {
+  margin-top: 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.analysis-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.analysis-header h2 {
+  margin: 4px 0 0;
+  font-size: 1.25rem;
+}
+
+.analysis-eyebrow {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.analysis-stage {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.analysis-section {
+  margin-top: 20px;
+}
+
+.analysis-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.analysis-section p {
+  margin: 0;
+  line-height: 1.6;
+}

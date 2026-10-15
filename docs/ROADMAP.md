@@ -65,9 +65,9 @@
 - [ ] Create React + TypeScript + Vite app.
 - [ ] Create deployment summary view.
 - [ ] Create stage status display.
-- [ ] Create AI analysis panel.
+- [x] Create AI analysis panel.
 - [ ] Create raw-log view or expandable section.
-- [ ] Connect frontend to FastAPI backend.
+- [x] Connect frontend to FastAPI backend.
 
 **Exit condition:** dashboard can render realistic deployment data from the backend.
 
@@ -146,7 +146,7 @@
 - [ ] Create prompt for failure interpretation.
 - [ ] Send only minimum useful context.
 - [ ] Validate / parse model output.
-- [ ] Display analysis in dashboard.
+- [x] Display analysis in dashboard.
 
 **Exit condition:** selected failure evidence produces a reliable structured diagnosis.
 
