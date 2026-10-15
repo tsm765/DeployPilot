@@ -81,6 +81,8 @@ Do not send the entire repository to the LLM by default.
 
 ## Engineering Rules
 
+- Make only the code changes the user requests. Do not add extra routes, tests,
+  dependencies, or features beyond pasted instructions without asking first.
 - Keep code simple enough to explain in a junior cloud / DevOps / software engineering interview.
 - Prefer clear modules and explicit data flow over clever abstractions.
 - Add tests for important behavior.
@@ -88,6 +90,12 @@ Do not send the entire repository to the LLM by default.
 - Keep API responses structured and predictable.
 - For AI analysis, prefer structured JSON output over free-form prose.
 - Update documentation when architecture or scope changes.
+
+## Local Tooling Preference
+
+- Use Python and other development tools installed on the user's PC, not Codex's bundled runtimes or dependencies.
+- Install missing tools or project dependencies locally when authorized, or ask the user to install them.
+- Prefer a project virtual environment for Python packages.
 
 ## Documentation Rules
 

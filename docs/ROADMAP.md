@@ -26,8 +26,8 @@
 - [x] Add `.gitignore`.
 - [ ] Add initial `README.md`.
 - [ ] Add frontend scaffold.
-- [ ] Add backend scaffold.
-- [ ] Add demo application scaffold.
+- [x] Add backend scaffold.
+- [x] Add demo application scaffold.
 - [ ] Confirm local development commands.
 
 **Exit condition:** the repository opens cleanly in Codex and each main component has a minimal runnable scaffold.
@@ -36,11 +36,11 @@
 
 ## Phase 3 — Demo Application
 
-- [ ] Implement `/`.
-- [ ] Implement `/health`.
-- [ ] Add a small automated test suite.
-- [ ] Add a controlled HTTP 500 failure path.
-- [ ] Add a configurable missing-environment-variable failure.
+- [x] Implement `/`.
+- [x] Implement `/health`.
+- [x] Add a small automated test suite.
+- [x] Add a controlled HTTP 500 failure path.
+- [x] Add a configurable missing-environment-variable failure.
 - [ ] Confirm tests pass locally.
 
 **Exit condition:** the demo application is simple, testable, and capable of controlled failures.
@@ -49,12 +49,12 @@
 
 ## Phase 4 — DeployPilot Backend
 
-- [ ] Create FastAPI backend.
-- [ ] Define deployment-status models.
-- [ ] Define failure-evidence model.
-- [ ] Create API endpoint(s) for deployment status.
-- [ ] Create API endpoint for failure analysis.
-- [ ] Add validation and basic tests.
+- [x] Create FastAPI backend.
+- [x] Define deployment-status models.
+- [x] Define failure-evidence model.
+- [x] Create API endpoint(s) for deployment status.
+- [x] Create API endpoint for failure analysis.
+- [x] Add validation and basic tests.
 
 **Exit condition:** backend can accept / expose structured deployment information without AI.
 
@@ -142,7 +142,7 @@
 
 - [ ] Add server-side OpenAI API integration.
 - [ ] Keep API key out of frontend and Git.
-- [ ] Define structured AI response schema.
+- [x] Define structured AI response schema.
 - [ ] Create prompt for failure interpretation.
 - [ ] Send only minimum useful context.
 - [ ] Validate / parse model output.
