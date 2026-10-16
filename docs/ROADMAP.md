@@ -75,11 +75,11 @@
 
 ## Phase 6 — Docker
 
-- [ ] Create Dockerfile for demo application.
+- [x] Create Dockerfile for demo application.
 - [ ] Build image locally.
 - [ ] Run image locally.
 - [ ] Verify `/health`.
-- [ ] Add appropriate `.dockerignore`.
+- [x] Add appropriate `.dockerignore`.
 
 **Exit condition:** demo application runs reliably from a Docker image.
 
@@ -87,11 +87,11 @@
 
 ## Phase 7 — Continuous Integration
 
-- [ ] Add GitHub Actions workflow.
-- [ ] Install dependencies in CI.
-- [ ] Run tests in CI.
+- [x] Add GitHub Actions workflow.
+- [x] Install dependencies in CI.
+- [x] Run tests in CI.
 - [ ] Run lightweight checks.
-- [ ] Build Docker image in CI.
+- [x] Build Docker image in CI.
 - [ ] Confirm a deliberately broken test fails the workflow.
 
 **Exit condition:** every relevant push can deterministically pass or fail through CI.

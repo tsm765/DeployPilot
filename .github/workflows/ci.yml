@@ -1,0 +1,35 @@
+name: DeployPilot CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  demo-app-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install demo app dependencies
+        working-directory: demo-app
+        run: pip install -r requirements.txt
+
+      - name: Run demo app tests
+        working-directory: demo-app
+        run: python -m pytest
+
+      - name: Build demo app Docker image
+        working-directory: demo-app
+        run: docker build -t deploypilot-demo:ci .
