@@ -34,7 +34,8 @@ jobs:
         working-directory: demo-app
         run: docker build -t deploypilot-demo:ci .
 
-  azure-acr-auth:
+  deploy-demo-app:
+    needs: demo-app-ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
@@ -66,3 +67,10 @@ jobs:
 
       - name: Push demo app image to ACR
         run: docker push ${{ vars.ACR_LOGIN_SERVER }}/deploypilot-demo:${{ github.sha }}
+
+      - name: Deploy image to Azure Container Apps
+        run: >
+          az containerapp update
+          --name ${{ vars.CONTAINER_APP_NAME }}
+          --resource-group ${{ vars.AZURE_RESOURCE_GROUP }}
+          --image ${{ vars.ACR_LOGIN_SERVER }}/deploypilot-demo:${{ github.sha }}
