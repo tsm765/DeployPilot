@@ -10,7 +10,7 @@ app = FastAPI(
 
 @app.get("/")
 def root() -> dict[str, str]:
-    return {"message": "DeployPilot demo API is running"}
+    return {"message": "DeployPilot demo API is running on Azure"}
 
 
 @app.get("/health")

@@ -10,7 +10,7 @@ def test_root():
 
     assert response.status_code == 200
     assert response.json() == {
-        "message": "DeployPilot demo API is running"
+        "message": "DeployPilot demo API is running on Azure"
     }
 
 
