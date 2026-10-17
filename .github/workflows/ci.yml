@@ -34,7 +34,7 @@ jobs:
         working-directory: demo-app
         run: docker build -t deploypilot-demo:ci .
 
-  azure-oidc-test:
+  azure-acr-auth:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
@@ -53,3 +53,6 @@ jobs:
 
       - name: Verify Azure login
         run: az account show --query "{Name:name,State:state}" -o table
+
+      - name: Log in to Azure Container Registry
+        run: az acr login --name ${{ vars.ACR_NAME }}
