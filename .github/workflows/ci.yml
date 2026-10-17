@@ -44,6 +44,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
       - name: Log in to Azure with OIDC
         uses: azure/login@v3
         with:
@@ -56,3 +59,7 @@ jobs:
 
       - name: Log in to Azure Container Registry
         run: az acr login --name ${{ vars.ACR_NAME }}
+
+      - name: Build demo app image
+        working-directory: demo-app
+        run: docker build -t ${{ vars.ACR_LOGIN_SERVER }}/deploypilot-demo:${{ github.sha }} .
