@@ -63,3 +63,6 @@ jobs:
       - name: Build demo app image
         working-directory: demo-app
         run: docker build -t ${{ vars.ACR_LOGIN_SERVER }}/deploypilot-demo:${{ github.sha }} .
+
+      - name: Push demo app image to ACR
+        run: docker push ${{ vars.ACR_LOGIN_SERVER }}/deploypilot-demo:${{ github.sha }}
