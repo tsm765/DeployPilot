@@ -1,0 +1,10 @@
+using './foundation.bicep'
+
+param location = 'swedencentral'
+param environment = 'dev'
+param projectName = 'deploypilot'
+param githubOwner = 'tsm765'
+param githubOwnerId = '244239256'
+param githubRepository = 'DeployPilot'
+param githubRepositoryId = '1408880577'
+param githubBranch = 'main'

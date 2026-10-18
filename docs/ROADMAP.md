@@ -66,7 +66,7 @@
 - [ ] Create deployment summary view.
 - [ ] Create stage status display.
 - [x] Create AI analysis panel.
-- [ ] Create raw-log view or expandable section.
+- [x] Create raw-log view or expandable section.
 - [x] Connect frontend to FastAPI backend.
 
 **Exit condition:** dashboard can render realistic deployment data from the backend.
@@ -100,10 +100,10 @@
 
 ## Phase 8 — Azure Infrastructure with Bicep
 
-- [ ] Define ACR.
-- [ ] Define Container Apps Environment.
-- [ ] Define Container App.
-- [ ] Define required identity / permissions.
+- [x] Define ACR.
+- [x] Define Container Apps Environment.
+- [x] Define Container App.
+- [x] Define required identity / permissions.
 - [ ] Define required configuration parameters.
 - [ ] Validate Bicep.
 - [ ] Deploy infrastructure.
@@ -114,12 +114,12 @@
 
 ## Phase 9 — Continuous Deployment
 
-- [ ] Configure GitHub -> Azure authentication.
+- [~] Configure GitHub -> Azure authentication.
 - [ ] Prefer OIDC where practical.
 - [ ] Push Docker image to ACR.
-- [ ] Deploy image to Azure Container Apps.
+- [~] Deploy image to Azure Container Apps.
 - [ ] Verify deployed health endpoint.
-- [ ] Expose deployment status to DeployPilot.
+- [~] Expose deployment status to DeployPilot.
 
 **Exit condition:** a Git push can result in an automated Azure deployment.
 
@@ -128,11 +128,11 @@
 ## Phase 10 — Failure Evidence Collection
 
 - [ ] Define normalized failure schema.
-- [ ] Capture CI-stage failures.
-- [ ] Capture deployment-stage failures.
-- [ ] Capture runtime / health failures.
-- [ ] Limit log excerpts to relevant information.
-- [ ] Add secret-redaction rules where needed.
+- [~] Capture CI-stage failures.
+- [~] Capture deployment-stage failures.
+- [~] Capture runtime / health failures.
+- [~] Limit log excerpts to relevant information.
+- [~] Add secret-redaction rules where needed.
 
 **Exit condition:** DeployPilot can produce a compact structured failure record without AI.
 
@@ -140,13 +140,17 @@
 
 ## Phase 11 — AI Deployment Assistant
 
-- [ ] Add server-side OpenAI API integration.
+- [~] Add server-side OpenAI API integration.
 - [ ] Keep API key out of frontend and Git.
 - [x] Define structured AI response schema.
-- [ ] Create prompt for failure interpretation.
-- [ ] Send only minimum useful context.
+- [x] Create prompt for failure interpretation.
+- [~] Send only minimum useful context.
 - [ ] Validate / parse model output.
 - [x] Display analysis in dashboard.
+
+The dashboard now requests backend-collected analysis when any deployment stage fails.
+
+Runtime health, runtime evidence, and the runtime analysis report are implemented. Backend tests use mocked GitHub, health, and AI responses so they can run without external requests.
 
 **Exit condition:** selected failure evidence produces a reliable structured diagnosis.
 
@@ -182,8 +186,9 @@
 
 ## Phase 13 — Engineering Polish
 
-- [ ] Improve error handling.
-- [ ] Add structured logging.
+- [~] Improve error handling (stable API error codes and safe provider messages added).
+- [x] Bound health response text and GitHub request time; clear stale dashboard analysis on refresh.
+- [x] Add structured logging.
 - [ ] Review secret handling.
 - [ ] Review API validation.
 - [ ] Clean project structure.

@@ -5,6 +5,8 @@ import type {
   DeploymentStatus,
   FailureAnalysis,
   FailureEvidence,
+  FailureReport,
+  RuntimeFailureReport,
   StageStatus,
 } from './types'
 
@@ -66,73 +68,150 @@ function App() {
   const [analysis, setAnalysis] =
     useState<FailureAnalysis | null>(null)
 
+  const [failureEvidence, setFailureEvidence] =
+    useState<FailureEvidence | null>(null)
+
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const [analysisLoading, setAnalysisLoading] =
+    useState(false)
+
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    async function loadDashboard() {
-      try {
-        const deploymentResponse = await fetch(
-          'http://127.0.0.1:8000/api/deployment'
-        )
+  async function loadDashboard(
+    isRefresh = false
+  ) {
+    if (isRefresh) {
+      setRefreshing(true)
+    } else {
+      setLoading(true)
+    }
 
-        if (!deploymentResponse.ok) {
-          throw new Error(
-            `Deployment request returned ${deploymentResponse.status}`
-          )
+    setError(null)
+
+    try {
+      const deploymentResponse = await fetch(
+        'http://127.0.0.1:8000/api/deployment',
+        {
+          cache: 'no-store',
         }
+      )
 
-        const deploymentData: DeploymentStatus =
-          await deploymentResponse.json()
+      if (!deploymentResponse.ok) {
+        throw new Error(
+          `Deployment request returned ${deploymentResponse.status}`
+        )
+      }
 
-        setDeployment(deploymentData)
+      const deploymentData: DeploymentStatus =
+        await deploymentResponse.json()
 
-        if (deploymentData.deployment === 'failed') {
-          const failure: FailureEvidence = {
-            application: deploymentData.application,
-            environment: deploymentData.environment,
-            stage: 'deployment',
-            error_message:
-              'Required environment variable DEMO_CONFIG is missing',
-            logs: [
-              'Health check returned HTTP 500',
-            ],
-            health_status: 'unhealthy',
-          }
+      setDeployment(deploymentData)
+      setAnalysis(null)
+      setFailureEvidence(null)
 
-          const analysisResponse = await fetch(
-            'http://127.0.0.1:8000/api/analyze',
+      const hasPipelineFailure = [
+        deploymentData.tests,
+        deploymentData.build,
+        deploymentData.container,
+        deploymentData.deployment,
+      ].includes('failed')
+
+      const hasRuntimeFailure =
+        deploymentData.runtime === 'failed'
+
+      if (hasPipelineFailure) {
+        setAnalysisLoading(true)
+
+        try {
+          const reportResponse = await fetch(
+            `http://127.0.0.1:8000/api/failure-report/${deploymentData.run_id}`,
             {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(failure),
+              cache: 'no-store',
             }
           )
 
-          if (!analysisResponse.ok) {
+          if (!reportResponse.ok) {
             throw new Error(
-              `Analysis request returned ${analysisResponse.status}`
+              `Failure report request returned ${reportResponse.status}`
             )
           }
 
-          const analysisData: FailureAnalysis =
-            await analysisResponse.json()
+          const reportData: FailureReport =
+            await reportResponse.json()
 
-          setAnalysis(analysisData)
+          if (reportData.run_id !== deploymentData.run_id) {
+            throw new Error(
+              'Failure analysis does not match the current workflow run'
+            )
+          }
+
+          setFailureEvidence(
+            reportData.evidence
+          )
+
+          setAnalysis(
+            reportData.analysis
+          )
+        } finally {
+          setAnalysisLoading(false)
         }
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message)
-        } else {
-          setError('Unable to load DeployPilot data')
+
+      } else if (hasRuntimeFailure) {
+        setAnalysisLoading(true)
+
+        try {
+          const reportResponse = await fetch(
+            'http://127.0.0.1:8000/api/runtime-failure-report',
+            {
+              method: 'POST',
+              cache: 'no-store',
+            }
+          )
+
+          if (!reportResponse.ok) {
+            throw new Error(
+              `Runtime failure report returned ${reportResponse.status}`
+            )
+          }
+
+          const reportData: RuntimeFailureReport =
+            await reportResponse.json()
+
+          setFailureEvidence(
+            reportData.evidence
+          )
+
+          setAnalysis(
+            reportData.analysis
+          )
+        } finally {
+          setAnalysisLoading(false)
         }
-      } finally {
-        setLoading(false)
+
+      } else {
+        setAnalysis(null)
+        setFailureEvidence(null)
       }
-    }
 
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError(
+          'Unable to load DeployPilot data'
+        )
+      }
+
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
+  }
+
+  useEffect(() => {
     loadDashboard()
   }, [])
 
@@ -170,6 +249,14 @@ function App() {
             <h1>DeployPilot</h1>
             <p>Deployment dashboard</p>
           </div>
+
+          <button
+            className="refresh-button"
+            onClick={() => loadDashboard(true)}
+            disabled={refreshing || analysisLoading}
+          >
+            {refreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
         </header>
 
         <section className="deployment-card">
@@ -182,6 +269,54 @@ function App() {
             <div>
               <span className="meta-label">Environment</span>
               <strong>{deployment.environment}</strong>
+            </div>
+          </div>
+
+          <div className="deployment-meta">
+            <div>
+              <span className="meta-label">
+                Branch
+              </span>
+
+              <strong>
+                {deployment.branch}
+              </strong>
+            </div>
+
+            <div>
+              <span className="meta-label">
+                Commit
+              </span>
+
+              <strong title={deployment.commit_sha}>
+                {deployment.commit_sha.slice(0, 7)}
+              </strong>
+            </div>
+
+            <div>
+              <span className="meta-label">
+                Workflow run
+              </span>
+
+              <a
+                href={deployment.workflow_url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                #{deployment.run_number}
+              </a>
+            </div>
+
+            <div>
+              <span className="meta-label">
+                Updated
+              </span>
+
+              <strong>
+                {new Date(
+                  deployment.updated_at
+                ).toLocaleString()}
+              </strong>
             </div>
           </div>
 
@@ -205,10 +340,27 @@ function App() {
               label="Deployment"
               status={deployment.deployment}
             />
+
+            <StatusRow
+              label="Runtime"
+              status={deployment.runtime}
+            />
           </div>
         </section>
 
-        {analysis && (
+        {analysisLoading && (
+          <section className="analysis-card">
+            <span className="analysis-eyebrow">
+              AI Deployment Assistant
+            </span>
+
+            <p>
+              Analyzing failure evidence...
+            </p>
+          </section>
+        )}
+
+        {analysis && !analysisLoading && (
           <section className="analysis-card">
             <div className="analysis-header">
               <div>
@@ -247,6 +399,55 @@ function App() {
 
               <p>{analysis.suggested_fix}</p>
             </div>
+          </section>
+        )}
+
+        {failureEvidence && !analysisLoading && (
+          <section className="evidence-card">
+            <details>
+              <summary>
+                View failure evidence
+              </summary>
+
+              <div className="evidence-content">
+                <div className="evidence-meta">
+                  <span>Stage</span>
+                  <strong>{failureEvidence.stage}</strong>
+                </div>
+
+                <div className="evidence-meta">
+                  <span>Detected error</span>
+                  <strong>{failureEvidence.error_message}</strong>
+                </div>
+
+                {failureEvidence.exit_code !== null &&
+                  failureEvidence.exit_code !== undefined && (
+                    <div className="evidence-meta">
+                      <span>Exit code</span>
+                      <strong>{failureEvidence.exit_code}</strong>
+                    </div>
+                  )}
+
+                {failureEvidence.health_status && (
+                  <div className="evidence-meta">
+                    <span>Health</span>
+                    <strong>{failureEvidence.health_status}</strong>
+                  </div>
+                )}
+
+                {failureEvidence.http_status !== null &&
+                  failureEvidence.http_status !== undefined && (
+                    <div className="evidence-meta">
+                      <span>HTTP status</span>
+                      <strong>{failureEvidence.http_status}</strong>
+                    </div>
+                  )}
+
+                <pre className="evidence-log">
+                  {failureEvidence.logs.join('\n')}
+                </pre>
+              </div>
+            </details>
           </section>
         )}
       </section>
