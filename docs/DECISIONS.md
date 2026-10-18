@@ -285,3 +285,50 @@ Reason:
 - gives the frontend predictable errors to display or handle;
 - avoids exposing provider details or validation internals;
 - keeps the MVP response format small.
+
+---
+
+## D-020 — Treat runtime health separately from deployment success
+
+**Status:** Accepted
+**Date:** 2026-10-18
+
+A successful CI/CD deployment does not by itself prove that the running application is healthy.
+
+DeployPilot therefore checks the deployed application's `/health` endpoint separately and represents runtime health as its own stage.
+
+Reason:
+
+- distinguishes delivery success from application health;
+- detects configuration and startup problems after deployment;
+- supports runtime-specific failure evidence.
+
+---
+
+## D-021 — Redact failure evidence before UI or AI use
+
+**Status:** Accepted
+**Date:** 2026-10-18
+
+Failure evidence passes through deterministic secret-redaction rules before it is displayed or sent to the OpenAI API.
+
+Reason:
+
+- reduces the risk of exposing credentials in CI/CD logs;
+- keeps AI input limited to useful troubleshooting evidence;
+- provides defense in depth alongside server-side secret handling.
+
+---
+
+## D-022 — Use structured server-side logging
+
+**Status:** Accepted
+**Date:** 2026-10-18
+
+DeployPilot emits concise structured operational logs for important events without logging credentials, full CI logs, or AI prompt contents.
+
+Reason:
+
+- improves backend diagnosability;
+- keeps logging predictable;
+- avoids turning operational logs into another secret-exposure path.

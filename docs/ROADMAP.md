@@ -62,9 +62,9 @@
 
 ## Phase 5 — DeployPilot Frontend
 
-- [ ] Create React + TypeScript + Vite app.
-- [ ] Create deployment summary view.
-- [ ] Create stage status display.
+- [x] Create React + TypeScript + Vite app.
+- [x] Create deployment summary view.
+- [x] Create stage status display.
 - [x] Create AI analysis panel.
 - [x] Create raw-log view or expandable section.
 - [x] Connect frontend to FastAPI backend.
@@ -127,12 +127,12 @@
 
 ## Phase 10 — Failure Evidence Collection
 
-- [ ] Define normalized failure schema.
-- [~] Capture CI-stage failures.
-- [~] Capture deployment-stage failures.
-- [~] Capture runtime / health failures.
-- [~] Limit log excerpts to relevant information.
-- [~] Add secret-redaction rules where needed.
+- [x] Define normalized failure schema.
+- [x] Capture CI-stage failures.
+- [x] Capture deployment-stage failures.
+- [x] Capture runtime / health failures.
+- [x] Limit log excerpts to relevant information.
+- [x] Add secret-redaction rules where needed.
 
 **Exit condition:** DeployPilot can produce a compact structured failure record without AI.
 
@@ -140,12 +140,12 @@
 
 ## Phase 11 — AI Deployment Assistant
 
-- [~] Add server-side OpenAI API integration.
-- [ ] Keep API key out of frontend and Git.
+- [x] Add server-side OpenAI API integration.
+- [x] Keep API key out of frontend and Git.
 - [x] Define structured AI response schema.
 - [x] Create prompt for failure interpretation.
-- [~] Send only minimum useful context.
-- [ ] Validate / parse model output.
+- [x] Send only minimum useful context.
+- [x] Validate / parse model output.
 - [x] Display analysis in dashboard.
 
 The dashboard now requests backend-collected analysis when any deployment stage fails.
@@ -186,14 +186,13 @@ Runtime health, runtime evidence, and the runtime analysis report are implemente
 
 ## Phase 13 — Engineering Polish
 
-- [~] Improve error handling (stable API error codes and safe provider messages added).
-- [x] Bound health response text and GitHub request time; clear stale dashboard analysis on refresh.
+- [x] Improve error handling.
 - [x] Add structured logging.
-- [ ] Review secret handling.
-- [ ] Review API validation.
-- [ ] Clean project structure.
-- [ ] Add important tests.
-- [ ] Remove unused dependencies and dead code.
+- [x] Review secret handling.
+- [x] Review API validation.
+- [x] Clean project structure.
+- [x] Add important tests.
+- [x] Remove unused dependencies and dead code.
 
 ---
 
