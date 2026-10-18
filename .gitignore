@@ -28,3 +28,9 @@ Thumbs.db
 
 # Local Azure / tooling artifacts
 .azure/
+
+# Internal DeployPilot planning/context
+AGENTS.md
+docs/PROJECT_CONTEXT.md
+docs/DECISIONS.md
+docs/ROADMAP.md
